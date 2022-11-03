@@ -45,6 +45,16 @@ vec2f vec2f::operator-(const float &val) const
 	return operator+(-val);
 }
 
+vec2f vec2f::operator*(const float &val) const
+{
+	return {x*val, y*val};
+}
+
+vec2f vec2f::operator/(const float &val) const
+{
+	return operator*(1/val);
+}
+
 vec2f& vec2f::operator+=(const vec2f &other)
 {
 	this->x += other.x;

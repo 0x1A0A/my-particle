@@ -12,27 +12,30 @@ static Color mixColor(Color A, Color B, float amount)
 
 void Particle::update(const float &timestep)
 {
-	position += {(velocity.x + external_force.x) * timestep,(velocity.y + external_force.y) * timestep};
-	velocity.x *= friction;
-	velocity.y *= friction;
-	external_force.x *= friction-0.02f;
-	external_force.y *= friction-0.02f;
+	position += {(velocity.x) * timestep,(velocity.y) * timestep};
+}
+
+// force should multiply by timestep
+void Particle::apply_force(const vec2f &force)
+{
+	velocity += force/mass;
 }
 
 void Particle::draw() const
 {
-	int ef = (int)external_force.length();
-	float a = (ef%255)/255.f;
+	float len = velocity.length();
+	vec2f vec = len > 0 ? vec2f{0,0} : velocity.normalized();
 	Color cc;
+	float energy = len*len/2*mass;
+	float sqen = sqrt(energy);
+	float si = ((int)sqen % 255 )/255.f;
+	float sk = ((int)(energy/4) % 255 )/255.f;
+	float sj = ((int)(pow(energy/4,2)) % 255 )/255.f;
 
 	cc.a = 255;
+	cc.r = sj * 38;
+	cc.g = si * 217;
+	cc.b = sk * 80;
 
-	cc.r = 
-	sqrt((a/2)*(a/2)) * 38;
-	cc.g = 
-	a * 217;
-	cc.b = 
-	sqrt(a/2) * 80;
-
-	DrawPixel( position.x, position.y, cc);
+	DrawPixel( position.x, position.y, mixColor(RAYWHITE, cc, sqen > 1 ? 1 : sqrt(sqen)));
 }

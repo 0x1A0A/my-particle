@@ -23,6 +23,9 @@ struct vec2f {
 	vec2f operator+(const float &val) const;
 	vec2f operator-(const vec2f &other) const;
 	vec2f operator-(const float &val) const;
+	vec2f operator*(const float &val) const;
+	vec2f operator/(const float &val) const;
+
 	vec2f& operator+=(const vec2f &other);
 	vec2f& operator+=(const float &val);
 	vec2f& operator-=(const vec2f &other);
